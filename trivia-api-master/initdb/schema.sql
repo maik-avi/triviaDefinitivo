@@ -17,3 +17,37 @@ CREATE TABLE players (
     UNIQUE(room_id, username)
 );
 
+CREATE TABLE teams (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    room_id BIGINT NOT NULL REFERENCES rooms(id),
+    name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE games (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    room_id BIGINT NOT NULL REFERENCES rooms(id),
+    rounds INTEGER NOT NULL,
+    questions_per_round INTEGER NOT NULL,
+    difficulty SMALLINT NOT NULL CHECK (difficulty BETWEEN 1 AND 3),
+    started_at TIMESTAMPTZ DEFAULT NOW(),
+    ended_at TIMESTAMPTZ
+);
+
+
+CREATE TABLE rounds (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    game_id BIGINT NOT NULL REFERENCES games(id) ON DELETE CASCADE,
+    round_number INTEGER NOT NULL,
+    started_at TIMESTAMPTZ,
+    ended_at TIMESTAMPTZ
+);
+
+CREATE TABLE questions (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    round_id BIGINT NOT NULL REFERENCES rounds(id) ON DELETE CASCADE,
+    type VARCHAR(20) NOT NULL CHECK (type IN ('multiple_choice', 'short_answer', 'buzzer')),
+    difficulty SMALLINT NOT NULL CHECK (difficulty BETWEEN 1 AND 3),
+    media_url TEXT,
+    options TEXT[],
+    correct_answers TEXT[]
+);

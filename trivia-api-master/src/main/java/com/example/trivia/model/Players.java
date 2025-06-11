@@ -1,27 +1,22 @@
 package com.example.trivia.model;
 
+
 public class Players {
-    private Integer playerId;  // corresponde a player_id SERIAL
-    private Integer roomId;    // FK a rooms(room_id)
+
+    private Integer id;
+    private Integer roomId;
     private String username;
     private Boolean isHost;
 
-
-    public Players() {}
-
-    public Players(Integer roomId, String username, Boolean isHost) {
-        this.roomId = roomId;
-        this.username = username;
-        this.isHost = isHost;
+    public Players() {
     }
 
-    // Getters y Setters
-    public Integer getPlayerId() {
-        return playerId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setPlayerId(Integer playerId) {
-        this.playerId = playerId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getRoomId() {
@@ -51,10 +46,11 @@ public class Players {
     @Override
     public String toString() {
         return "Player{" +
-                "playerId=" + playerId +
+                "id=" + id +
                 ", roomId=" + roomId +
                 ", username='" + username + '\'' +
                 ", isHost=" + isHost +
                 '}';
     }
+
 }

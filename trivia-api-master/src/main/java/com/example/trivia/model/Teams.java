@@ -4,12 +4,12 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table("teams")
-public class Team {
+public class Teams {
     @Id
     private Long teamId;
     private Long roomId;
 
-    public Team() {
+    public Teams() {
     }
 
     public Long getTeamId() {

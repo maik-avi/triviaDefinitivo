@@ -6,7 +6,7 @@ import com.example.trivia.model.Answer;
 import com.example.trivia.model.Game;
 import com.example.trivia.model.Player;
 import com.example.trivia.model.Question;
-import com.example.trivia.model.Room;
+import com.example.trivia.model.Rooms;
 import com.example.trivia.model.Round;
 import com.example.trivia.model.RoundQuestion;
 import com.example.trivia.repository.AnswerRepository;
@@ -80,7 +80,7 @@ public class GameController {
 
     @PostMapping("/games")
     public ResponseEntity<Game> createGame(@RequestBody GameCreationRequest request, HttpSession session) {
-        Room room = roomRepo.findById(request.roomId())
+        Rooms room = roomRepo.findById(request.roomId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid room id"));
 
         Long currentPlayerId = (Long) session.getAttribute(request.roomId().toString());

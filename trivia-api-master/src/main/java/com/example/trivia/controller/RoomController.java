@@ -2,9 +2,9 @@ package com.example.trivia.controller;
 
 import com.example.trivia.dto.JoinRoomRequest;
 import com.example.trivia.dto.RoomCreationRequest;
-import com.example.trivia.model.Player;
-import com.example.trivia.model.Room;
-import com.example.trivia.model.Team;
+import com.example.trivia.model.Players;
+import com.example.trivia.model.Rooms;
+import com.example.trivia.model.Teams;
 import com.example.trivia.repository.PlayerRepository;
 import com.example.trivia.repository.RoomRepository;
 import com.example.trivia.repository.TeamRepository;

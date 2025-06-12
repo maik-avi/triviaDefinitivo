@@ -16,12 +16,18 @@ CREATE TABLE players (
     UNIQUE(room_id, username)
 );
 
+
+-- Cada equipo tendrá su id, estará asociado a una sala mediante room_id,
+-- y tendrá un nombre. Se asume que los nombres de equipos pueden repetirse entre distintas salas.
 CREATE TABLE teams (
     id SERIAL PRIMARY KEY,
     room_id INTEGER NOT NULL REFERENCES rooms(id) ON DELETE CASCADE,
     name VARCHAR(255) NOT NULL
 );
 
+-- Cada partida tendrá su id, estará asociada a una sala mediante room_id,
+-- y almacenará la configuración del juego: número de rondas, preguntas por ronda,
+-- dificultad de las preguntas, y los timestamps de inicio y fin de la partida.
 CREATE TABLE games (
     id SERIAL PRIMARY KEY,
     room_id INTEGER NOT NULL REFERENCES rooms(id) ON DELETE CASCADE,
@@ -32,6 +38,10 @@ CREATE TABLE games (
     ended_at TIMESTAMPTZ
 );
 
+
+-- Cada ronda tendrá su id, estará relacionada con una partida mediante game_id,
+-- y se identificará con un número de ronda (round_number).
+-- También puede almacenar el momento en que comenzó y terminó la ronda.
 CREATE TABLE rounds (
     id SERIAL PRIMARY KEY,
     game_id INTEGER NOT NULL REFERENCES games(id) ON DELETE CASCADE,
@@ -40,6 +50,11 @@ CREATE TABLE rounds (
     ended_at TIMESTAMPTZ
 );
 
+
+-- Cada pregunta tendrá su id, estará relacionada con una ronda mediante round_id,
+-- tendrá un tipo (opción múltiple, respuesta corta o buzzer),
+-- una dificultad (de 1 a 3), un posible enlace multimedia,
+-- y campos para las opciones (si aplica) y las respuestas correctas.
 CREATE TABLE questions (
     id SERIAL PRIMARY KEY,
     round_id INTEGER NOT NULL REFERENCES rounds(id) ON DELETE CASCADE,
@@ -50,6 +65,10 @@ CREATE TABLE questions (
     correct_answers TEXT[]
 );
 
+
+-- Cada respuesta tendrá su id, estará relacionada con una pregunta y un jugador mediante question_id y player_id,
+-- registrará cuándo se envió la respuesta, el contenido de la respuesta,
+-- si fue correcta o no, y los puntos obtenidos por esa respuesta.
 CREATE TABLE answers (
     id SERIAL PRIMARY KEY,
     question_id INTEGER NOT NULL REFERENCES questions(id) ON DELETE CASCADE,
@@ -60,6 +79,10 @@ CREATE TABLE answers (
     points_awarded INT DEFAULT 0
 );
 
+
+-- Esta tabla registra la puntuación obtenida por cada equipo en una partida.
+-- La clave primaria está compuesta por team_id y game_id, indicando a qué equipo y partida corresponde.
+-- Se guarda el número total de puntos obtenidos por el equipo en dicha partida.
 CREATE TABLE team_scores (
     team_id INTEGER NOT NULL REFERENCES teams(id) ON DELETE CASCADE,
     game_id INTEGER NOT NULL REFERENCES games(id) ON DELETE CASCADE,

@@ -1,6 +1,7 @@
 -- Cada room tendrá su id, una url o código y además se declarará cuando fue creada la room.
 CREATE TABLE rooms (
     id SERIAL PRIMARY KEY,
+    --La URL, se tendrá que usar en JOIN ROOM
     url VARCHAR(255) UNIQUE NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
@@ -21,8 +22,7 @@ CREATE TABLE players (
 -- y tendrá un nombre. Se asume que los nombres de equipos pueden repetirse entre distintas salas.
 CREATE TABLE teams (
     id SERIAL PRIMARY KEY,
-    room_id INTEGER NOT NULL REFERENCES rooms(id) ON DELETE CASCADE,
-    name VARCHAR(255) NOT NULL
+    room_id INTEGER NOT NULL REFERENCES rooms(id) ON DELETE CASCADE
 );
 
 -- Cada partida tendrá su id, estará asociada a una sala mediante room_id,
@@ -57,6 +57,7 @@ CREATE TABLE rounds (
 -- y campos para las opciones (si aplica) y las respuestas correctas.
 CREATE TABLE questions (
     id SERIAL PRIMARY KEY,
+    --Arreglar cardinalidad, que sea N-N
     round_id INTEGER NOT NULL REFERENCES rounds(id) ON DELETE CASCADE,
     type VARCHAR(20) NOT NULL CHECK (type IN ('multiple_choice', 'short_answer', 'buzzer')),
     difficulty SMALLINT NOT NULL CHECK (difficulty BETWEEN 1 AND 3),

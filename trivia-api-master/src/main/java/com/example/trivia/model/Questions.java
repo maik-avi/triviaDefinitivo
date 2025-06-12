@@ -1,5 +1,6 @@
 package com.example.trivia.model;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Questions {
@@ -9,6 +10,14 @@ public class Questions {
     private String type;
     private Integer difficulty;
     private String mediaUrl;
+
+    //Array a = resultSet.getArray("options");
+    //String[] s = a.getArray();
+    //List<String> options = new ArrayList<>(Array.asList(s));
+
+
+    // statement.setArray(1, con.createArrayOf("TEXT", opts.toArray))
+
     private List<String> options;
     private List<String> correctAnswers;
 

@@ -1,30 +1,47 @@
 package com.example.trivia.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
 
-@Table("teams")
+
 public class Teams {
-    @Id
-    private Long teamId;
-    private Long roomId;
+
+    private Integer id;
+    private Integer roomId;
+    private String name;
 
     public Teams() {
     }
 
-    public Long getTeamId() {
-        return teamId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setTeamId(Long teamId) {
-        this.teamId = teamId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public Long getRoomId() {
+    public Integer getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(Long roomId) {
+    public void setRoomId(Integer roomId) {
         this.roomId = roomId;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "id=" + id +
+                ", roomId=" + roomId +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
 }

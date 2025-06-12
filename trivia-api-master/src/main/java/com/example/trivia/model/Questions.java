@@ -1,29 +1,34 @@
 package com.example.trivia.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
-
 import java.util.List;
 
-@Table("questions")
-public class Question {
-    @Id
-    private Long questionId;
+public class Questions {
+
+    private Integer id;
+    private Integer roundId;
     private String type;
-    private String question;
-    private String mediaUrl; // nullable
-    private List<String> options; // nullable
-    private List<String> correctAnswers; // nullable
+    private Integer difficulty;
+    private String mediaUrl;
+    private List<String> options;
+    private List<String> correctAnswers;
 
-    public Question() {
+    public Questions() {
     }
 
-    public Long getQuestionId() {
-        return questionId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setQuestionId(Long questionId) {
-        this.questionId = questionId;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getRoundId() {
+        return roundId;
+    }
+
+    public void setRoundId(Integer roundId) {
+        this.roundId = roundId;
     }
 
     public String getType() {
@@ -34,12 +39,12 @@ public class Question {
         this.type = type;
     }
 
-    public String getQuestion() {
-        return question;
+    public Integer getDifficulty() {
+        return difficulty;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
+    public void setDifficulty(Integer difficulty) {
+        this.difficulty = difficulty;
     }
 
     public String getMediaUrl() {

@@ -8,7 +8,6 @@ import com.example.trivia.model.Player;
 import com.example.trivia.model.Question;
 import com.example.trivia.model.Rooms;
 import com.example.trivia.model.Round;
-import com.example.trivia.model.RoundQuestion;
 import com.example.trivia.repository.AnswerRepository;
 import com.example.trivia.repository.GameRepository;
 import com.example.trivia.repository.PlayerRepository;

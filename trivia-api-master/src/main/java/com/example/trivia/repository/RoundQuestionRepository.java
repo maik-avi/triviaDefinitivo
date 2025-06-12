@@ -1,7 +1,5 @@
 package com.example.trivia.repository;
 
-import com.example.trivia.model.RoundQuestion;
-
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

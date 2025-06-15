@@ -4,7 +4,7 @@ import java.time.OffsetDateTime;
 
 public class Answers {
 
-    private Integer id;
+    private Integer answerId;
     private Integer questionId;
     private Integer playerId;
     private OffsetDateTime submittedAt;
@@ -15,12 +15,12 @@ public class Answers {
     public Answers() {
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getAnswerId() {
+        return answerId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setAnswerId(Integer answerId) {
+        this.answerId = answerId;
     }
 
     public Integer getQuestionId() {
@@ -69,5 +69,18 @@ public class Answers {
 
     public void setPointsAwarded(Integer pointsAwarded) {
         this.pointsAwarded = pointsAwarded;
+    }
+
+    @Override
+    public String toString() {
+        return "Answer{" +
+                "answerId=" + answerId +
+                ", questionId=" + questionId +
+                ", playerId=" + playerId +
+                ", submittedAt=" + submittedAt +
+                ", answer='" + answer + '\'' +
+                ", correct=" + correct +
+                ", pointsAwarded=" + pointsAwarded +
+                '}';
     }
 }

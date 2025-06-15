@@ -1,22 +1,19 @@
 package com.example.trivia.model;
 
-
-
 public class Teams {
 
-    private Integer id;
+    private Integer teamId;
     private Integer roomId;
-    private String name;
 
     public Teams() {
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getTeamId() {
+        return teamId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setTeamId(Integer teamId) {
+        this.teamId = teamId;
     }
 
     public Integer getRoomId() {
@@ -27,21 +24,11 @@ public class Teams {
         this.roomId = roomId;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     @Override
     public String toString() {
         return "Team{" +
-                "id=" + id +
+                "teamId=" + teamId +
                 ", roomId=" + roomId +
-                ", name='" + name + '\'' +
                 '}';
     }
-
 }

@@ -2,29 +2,21 @@ package com.example.trivia.model;
 
 import java.time.OffsetDateTime;
 
-
 public class Rooms {
 
-    private Integer id;
-
-
+    private Integer roomId;
     private String url;
-
-
     private OffsetDateTime createdAt;
 
     public Rooms() {
-
     }
 
-
-
-    public Integer getId() {
-        return id;
+    public Integer getRoomId() {
+        return roomId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setRoomId(Integer roomId) {
+        this.roomId = roomId;
     }
 
     public String getUrl() {
@@ -45,11 +37,10 @@ public class Rooms {
 
     @Override
     public String toString() {
-        return "Rooms{" +
-                "id=" + id +
+        return "Room{" +
+                "roomId=" + roomId +
                 ", url='" + url + '\'' +
                 ", createdAt=" + createdAt +
                 '}';
     }
-
 }

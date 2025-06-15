@@ -1,9 +1,8 @@
 package com.example.trivia.model;
 
-
 public class Players {
 
-    private Integer id;
+    private Integer playerId;
     private Integer roomId;
     private String username;
     private Boolean isHost;
@@ -11,12 +10,12 @@ public class Players {
     public Players() {
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getPlayerId() {
+        return playerId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setPlayerId(Integer playerId) {
+        this.playerId = playerId;
     }
 
     public Integer getRoomId() {
@@ -46,11 +45,10 @@ public class Players {
     @Override
     public String toString() {
         return "Player{" +
-                "id=" + id +
+                "playerId=" + playerId +
                 ", roomId=" + roomId +
                 ", username='" + username + '\'' +
                 ", isHost=" + isHost +
                 '}';
     }
-
 }

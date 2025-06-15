@@ -4,7 +4,7 @@ import java.time.OffsetDateTime;
 
 public class Games {
 
-    private Integer id;
+    private Integer gameId;
     private Integer roomId;
     private Integer rounds;
     private Integer questionsPerRound;
@@ -15,12 +15,12 @@ public class Games {
     public Games() {
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getGameId() {
+        return gameId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setGameId(Integer gameId) {
+        this.gameId = gameId;
     }
 
     public Integer getRoomId() {
@@ -73,8 +73,8 @@ public class Games {
 
     @Override
     public String toString() {
-        return "Games{" +
-                "id=" + id +
+        return "Game{" +
+                "gameId=" + gameId +
                 ", roomId=" + roomId +
                 ", rounds=" + rounds +
                 ", questionsPerRound=" + questionsPerRound +

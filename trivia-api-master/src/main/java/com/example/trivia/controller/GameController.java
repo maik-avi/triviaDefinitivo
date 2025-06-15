@@ -144,10 +144,10 @@ public class GameController {
 
     @DeleteMapping("/games/{gameId}")
     public ResponseEntity<Void> deleteGame(@PathVariable Long gameId, HttpSession session) {
-        Game game = gameRepo.findById(gameId)
+        Games game = gameRepo.findById(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
 
-        Room room = roomRepo.findById(game.getRoomId())
+        Rooms room = roomRepo.findById(game.getRoomId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Room not found"));
 
         Long currentPlayerId = (Long) session.getAttribute(room.getRoomId().toString());

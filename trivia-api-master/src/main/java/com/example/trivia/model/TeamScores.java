@@ -32,4 +32,13 @@ public class TeamScores {
     public void setPoints(Integer points) {
         this.points = points;
     }
+
+    @Override
+    public String toString() {
+        return "TeamScore{" +
+                "teamId=" + teamId +
+                ", gameId=" + gameId +
+                ", points=" + points +
+                '}';
+    }
 }

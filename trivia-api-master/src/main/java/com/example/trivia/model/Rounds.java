@@ -4,7 +4,7 @@ import java.time.OffsetDateTime;
 
 public class Rounds {
 
-    private Integer id;
+    private Integer roundId;
     private Integer gameId;
     private Integer roundNumber;
     private OffsetDateTime startedAt;
@@ -13,12 +13,12 @@ public class Rounds {
     public Rounds() {
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getRoundId() {
+        return roundId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setRoundId(Integer roundId) {
+        this.roundId = roundId;
     }
 
     public Integer getGameId() {
@@ -51,5 +51,16 @@ public class Rounds {
 
     public void setEndedAt(OffsetDateTime endedAt) {
         this.endedAt = endedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "Round{" +
+                "roundId=" + roundId +
+                ", gameId=" + gameId +
+                ", roundNumber=" + roundNumber +
+                ", startedAt=" + startedAt +
+                ", endedAt=" + endedAt +
+                '}';
     }
 }

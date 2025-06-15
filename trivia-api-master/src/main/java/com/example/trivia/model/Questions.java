@@ -1,35 +1,26 @@
 package com.example.trivia.model;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class Questions {
 
-    private Integer id;
+    private Integer questionId;
     private Integer roundId;
     private String type;
     private Integer difficulty;
     private String mediaUrl;
-
-    //Array a = resultSet.getArray("options");
-    //String[] s = a.getArray();
-    //List<String> options = new ArrayList<>(Array.asList(s));
-
-
-    // statement.setArray(1, con.createArrayOf("TEXT", opts.toArray))
-
     private List<String> options;
     private List<String> correctAnswers;
 
     public Questions() {
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getQuestionId() {
+        return questionId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setQuestionId(Integer questionId) {
+        this.questionId = questionId;
     }
 
     public Integer getRoundId() {
@@ -78,5 +69,18 @@ public class Questions {
 
     public void setCorrectAnswers(List<String> correctAnswers) {
         this.correctAnswers = correctAnswers;
+    }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "questionId=" + questionId +
+                ", roundId=" + roundId +
+                ", type='" + type + '\'' +
+                ", difficulty=" + difficulty +
+                ", mediaUrl='" + mediaUrl + '\'' +
+                ", options=" + options +
+                ", correctAnswers=" + correctAnswers +
+                '}';
     }
 }

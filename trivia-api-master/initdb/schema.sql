@@ -1,6 +1,6 @@
 -- Cada room tendrá su id, una url o código y además se declarará cuando fue creada la room.
 CREATE TABLE rooms (
-    id SERIAL PRIMARY KEY,
+    room_id SERIAL PRIMARY KEY,
     --La URL, se tendrá que usar en JOIN ROOM
     url VARCHAR(255) UNIQUE NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -10,8 +10,8 @@ CREATE TABLE rooms (
 -- se tendrá que comprobar si el jugador es el host o no,
 -- y además que en una room solamente se podrá tener usernames distintos entre sí
 CREATE TABLE players (
-    id SERIAL PRIMARY KEY,
-    room_id INTEGER NOT NULL REFERENCES rooms(id) ON DELETE CASCADE,
+    player_id SERIAL PRIMARY KEY,
+    room_id INTEGER NOT NULL REFERENCES rooms(room_id) ON DELETE CASCADE,
     username VARCHAR(255) NOT NULL,
     is_host BOOLEAN NOT NULL DEFAULT FALSE,
     UNIQUE(room_id, username)
@@ -21,16 +21,16 @@ CREATE TABLE players (
 -- Cada equipo tendrá su id, estará asociado a una sala mediante room_id,
 -- y tendrá un nombre. Se asume que los nombres de equipos pueden repetirse entre distintas salas.
 CREATE TABLE teams (
-    id SERIAL PRIMARY KEY,
-    room_id INTEGER NOT NULL REFERENCES rooms(id) ON DELETE CASCADE
+    team_id SERIAL PRIMARY KEY,
+    room_id INTEGER NOT NULL REFERENCES rooms(room_id) ON DELETE CASCADE
 );
 
 -- Cada partida tendrá su id, estará asociada a una sala mediante room_id,
 -- y almacenará la configuración del juego: número de rondas, preguntas por ronda,
 -- dificultad de las preguntas, y los timestamps de inicio y fin de la partida.
 CREATE TABLE games (
-    id SERIAL PRIMARY KEY,
-    room_id INTEGER NOT NULL REFERENCES rooms(id) ON DELETE CASCADE,
+    game_id SERIAL PRIMARY KEY,
+    room_id INTEGER NOT NULL REFERENCES rooms(room_id) ON DELETE CASCADE,
     rounds INTEGER NOT NULL,
     questions_per_round INTEGER NOT NULL,
     difficulty SMALLINT NOT NULL CHECK (difficulty BETWEEN 1 AND 3),
@@ -43,8 +43,8 @@ CREATE TABLE games (
 -- y se identificará con un número de ronda (round_number).
 -- También puede almacenar el momento en que comenzó y terminó la ronda.
 CREATE TABLE rounds (
-    id SERIAL PRIMARY KEY,
-    game_id INTEGER NOT NULL REFERENCES games(id) ON DELETE CASCADE,
+    round_id SERIAL PRIMARY KEY,
+    game_id INTEGER NOT NULL REFERENCES games(game_id) ON DELETE CASCADE,
     round_number INTEGER NOT NULL,
     started_at TIMESTAMPTZ,
     ended_at TIMESTAMPTZ
@@ -56,9 +56,9 @@ CREATE TABLE rounds (
 -- una dificultad (de 1 a 3), un posible enlace multimedia,
 -- y campos para las opciones (si aplica) y las respuestas correctas.
 CREATE TABLE questions (
-    id SERIAL PRIMARY KEY,
+    question_id SERIAL PRIMARY KEY,
     --Arreglar cardinalidad, que sea N-N
-    round_id INTEGER NOT NULL REFERENCES rounds(id) ON DELETE CASCADE,
+    round_id INTEGER NOT NULL REFERENCES rounds(round_id) ON DELETE CASCADE,
     type VARCHAR(20) NOT NULL CHECK (type IN ('multiple_choice', 'short_answer', 'buzzer')),
     difficulty SMALLINT NOT NULL CHECK (difficulty BETWEEN 1 AND 3),
     media_url TEXT,
@@ -71,9 +71,9 @@ CREATE TABLE questions (
 -- registrará cuándo se envió la respuesta, el contenido de la respuesta,
 -- si fue correcta o no, y los puntos obtenidos por esa respuesta.
 CREATE TABLE answers (
-    id SERIAL PRIMARY KEY,
-    question_id INTEGER NOT NULL REFERENCES questions(id) ON DELETE CASCADE,
-    player_id INTEGER NOT NULL REFERENCES players(id) ON DELETE CASCADE,
+    answer_id SERIAL PRIMARY KEY,
+    question_id INTEGER NOT NULL REFERENCES questions(question_id) ON DELETE CASCADE,
+    player_id INTEGER NOT NULL REFERENCES players(player_id) ON DELETE CASCADE,
     submitted_at TIMESTAMPTZ DEFAULT NOW(),
     answer TEXT,
     correct BOOLEAN,
@@ -85,8 +85,8 @@ CREATE TABLE answers (
 -- La clave primaria está compuesta por team_id y game_id, indicando a qué equipo y partida corresponde.
 -- Se guarda el número total de puntos obtenidos por el equipo en dicha partida.
 CREATE TABLE team_scores (
-    team_id INTEGER NOT NULL REFERENCES teams(id) ON DELETE CASCADE,
-    game_id INTEGER NOT NULL REFERENCES games(id) ON DELETE CASCADE,
+    team_id INTEGER NOT NULL REFERENCES teams(team_id) ON DELETE CASCADE,
+    game_id INTEGER NOT NULL REFERENCES games(game_id) ON DELETE CASCADE,
     points INTEGER DEFAULT 0,
     PRIMARY KEY (team_id, game_id)
 );

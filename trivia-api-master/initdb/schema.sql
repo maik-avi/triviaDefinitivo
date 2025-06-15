@@ -57,13 +57,17 @@ CREATE TABLE rounds (
 -- y campos para las opciones (si aplica) y las respuestas correctas.
 CREATE TABLE questions (
     question_id SERIAL PRIMARY KEY,
-    --Arreglar cardinalidad, que sea N-N
-    round_id INTEGER NOT NULL REFERENCES rounds(round_id) ON DELETE CASCADE,
     type VARCHAR(20) NOT NULL CHECK (type IN ('multiple_choice', 'short_answer', 'buzzer')),
     difficulty SMALLINT NOT NULL CHECK (difficulty BETWEEN 1 AND 3),
     media_url TEXT,
     options TEXT[],
     correct_answers TEXT[]
+);
+
+CREATE TABLE round_questions (
+    round_id INTEGER NOT NULL REFERENCES rounds(round_id) ON DELETE CASCADE,
+    question_id INTEGER NOT NULL REFERENCES questions(question_id) ON DELETE CASCADE,
+    PRIMARY KEY (round_id, question_id)
 );
 
 

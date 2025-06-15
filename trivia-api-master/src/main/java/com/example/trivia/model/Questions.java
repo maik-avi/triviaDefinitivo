@@ -5,9 +5,8 @@ import java.util.List;
 public class Questions {
 
     private Integer questionId;
-    private Integer roundId;
-    private String type;
-    private Integer difficulty;
+    private String type; // multiple_choice, short_answer, buzzer
+    private Short difficulty; // entre 1 y 3
     private String mediaUrl;
     private List<String> options;
     private List<String> correctAnswers;
@@ -23,14 +22,6 @@ public class Questions {
         this.questionId = questionId;
     }
 
-    public Integer getRoundId() {
-        return roundId;
-    }
-
-    public void setRoundId(Integer roundId) {
-        this.roundId = roundId;
-    }
-
     public String getType() {
         return type;
     }
@@ -39,11 +30,11 @@ public class Questions {
         this.type = type;
     }
 
-    public Integer getDifficulty() {
+    public Short getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(Integer difficulty) {
+    public void setDifficulty(Short difficulty) {
         this.difficulty = difficulty;
     }
 
@@ -73,9 +64,8 @@ public class Questions {
 
     @Override
     public String toString() {
-        return "Question{" +
+        return "Questions{" +
                 "questionId=" + questionId +
-                ", roundId=" + roundId +
                 ", type='" + type + '\'' +
                 ", difficulty=" + difficulty +
                 ", mediaUrl='" + mediaUrl + '\'' +

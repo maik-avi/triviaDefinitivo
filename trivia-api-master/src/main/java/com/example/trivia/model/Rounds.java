@@ -55,7 +55,7 @@ public class Rounds {
 
     @Override
     public String toString() {
-        return "Round{" +
+        return "Rounds{" +
                 "roundId=" + roundId +
                 ", gameId=" + gameId +
                 ", roundNumber=" + roundNumber +

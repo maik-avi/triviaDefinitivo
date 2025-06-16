@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -49,14 +50,14 @@ class RoomControllerTest {
     @BeforeEach
     void setUp() {
         testRoom = new Room();
-        testRoom.setRoomId(1L);
-        testRoom.setCode("TEST123");
-        testRoom.setCreatedAt(Instant.now());
+        testRoom.setRoomId(1);
+        testRoom.setUrl("TEST123");
+        testRoom.setCreatedAt(OffsetDateTime.from(Instant.now()));
         
         testPlayer = new Player();
-        testPlayer.setPlayerId(1L);
+        testPlayer.setPlayerId(1);
         testPlayer.setUsername("testUser");
-        testPlayer.setRoomId(1L);
+        testPlayer.setRoomId(1);
     }
     
     @Test
@@ -71,7 +72,7 @@ class RoomControllerTest {
         assertNotNull(response.getBody());
         assertEquals(testRoom.getRoomId(), response.getBody().getRoomId());
         verify(roomRepo, times(1)).save(any(Room.class));
-        verify(roomRepo, times(1)).save(argThat(room -> "TEST123".equals(room.getCode())));
+        verify(roomRepo, times(1)).save(argThat(room -> "TEST123".equals(room.getUrl())));
     }
     
     @Test
@@ -161,7 +162,7 @@ class RoomControllerTest {
         HttpSession session = mock(HttpSession.class);
         when(session.getAttribute("1")).thenReturn(2L);
         
-        testRoom.setHostId(1L);
+        testRoom.setHostId(1);
         when(roomRepo.findById(1L)).thenReturn(Optional.of(testRoom));
         
         assertThrows(ResponseStatusException.class, () -> {
@@ -176,7 +177,7 @@ class RoomControllerTest {
         HttpSession session = mock(HttpSession.class);
         when(session.getAttribute("1")).thenReturn(1L);
         
-        testRoom.setHostId(1L);
+        testRoom.setHostId(1);
         when(roomRepo.findById(1L)).thenReturn(Optional.of(testRoom));
         
         ResponseEntity<Void> response = controller.deleteRoom(1L, session);

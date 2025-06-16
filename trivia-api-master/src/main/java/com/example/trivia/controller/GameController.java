@@ -93,7 +93,7 @@ public class GameController {
 
         Game game = new Game();
         game.setRoomId(Math.toIntExact(request.roomId()));
-        game.setStartedAt(OffsetDateTime.of().now());
+        game.setStartedAt(OffsetDateTime.now());
         game.setEndedAt(game.getStartedAt().plus(Duration.ofSeconds(request.rounds() * request.timePerRound())));
         game = gameRepo.save(game);
 
@@ -218,13 +218,13 @@ public class GameController {
         if (!currentPlayer.getRoomId().equals(game.getRoomId())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Player is not in the room");
         }
-
+        round = new Round();
         Answer answer = new Answer();
-        answer.setRoundId(roundId);
-        answer.setQuestionId(questionId);
+        round.setRoundId(Math.toIntExact(roundId));
+        answer.setQuestionId(Math.toIntExact(questionId));
         answer.setPlayerId(currentPlayer.getPlayerId());
         answer.setAnswer(request.answer());
-        answer.setCreatedAt(Instant.now());
+        answer.setSubmittedAt(OffsetDateTime.from(Instant.now()));
         answer.setCorrect(question.getCorrectAnswers().stream()
                 .anyMatch(correctAnswer -> answer.getAnswer().equalsIgnoreCase(correctAnswer)));
         answerRepo.save(answer);
@@ -249,7 +249,7 @@ public class GameController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Round has not ended yet");
         }
 
-        List<Answer> answers = answerRepo.findByRoundIdAndQuestionId(roundId, questionId);
+        List<Answer> answers = answerRepo.findByRoundIdAndQuestionId(Math.toIntExact(roundId), questionId);
         return ResponseEntity.ok(answers);
     }
 

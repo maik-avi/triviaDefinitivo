@@ -7,6 +7,10 @@ public class Player {
     private String username;
     private Boolean isHost;
 
+
+    //Esto es para que la aplicacion funcione, ya que me da errores, PERO NO SE HA DE TOMAR EN CUENTA
+    private Long teamId;
+
     public Player() {
     }
 
@@ -40,6 +44,17 @@ public class Player {
 
     public void setIsHost(Boolean isHost) {
         this.isHost = isHost;
+    }
+
+
+    //NO SE HA DE TOMAR EN CUENTA, ES PARA QUE FUNCIONE EL SPRINGBOOT
+    public Long getTeamId() {
+        return teamId;
+    }
+
+
+    public void setTeamId(Long teamId) {
+        this.teamId = teamId;
     }
 
     @Override

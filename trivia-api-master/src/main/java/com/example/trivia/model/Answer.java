@@ -1,5 +1,8 @@
 package com.example.trivia.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.MappedCollection;
+
 import java.time.OffsetDateTime;
 
 public class Answer {
@@ -11,6 +14,9 @@ public class Answer {
     private String answer;
     private Boolean correct;
     private Integer pointsAwarded;
+    private Integer roundId;
+
+
 
     public Answer() {
     }
@@ -69,6 +75,13 @@ public class Answer {
 
     public void setPointsAwarded(Integer pointsAwarded) {
         this.pointsAwarded = pointsAwarded;
+    }
+    public Integer getRoundId() {
+        return roundId;
+    }
+
+    public void setRoundId(Integer roundId) {
+        this.roundId = roundId;
     }
 
     @Override

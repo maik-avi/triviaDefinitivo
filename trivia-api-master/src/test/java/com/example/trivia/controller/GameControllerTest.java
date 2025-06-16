@@ -33,6 +33,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -76,41 +77,41 @@ class GameControllerTest {
     @BeforeEach
     void setUp() {
         testGame = new Game();
-        testGame.setGameId(1L);
-        testGame.setRoomId(1L);
-        testGame.setCreatedAt(Instant.now());
+        testGame.setGameId(1);
+        testGame.setRoomId(1);
+        testGame.setStartedAt(OffsetDateTime.from(Instant.now()));
         
         testRoom = new Room();
-        testRoom.setRoomId(1L);
-        testRoom.setHostId(1L);
+        testRoom.setRoomId(1);
+        testRoom.setHostId(1);
         
         testPlayer = new Player();
-        testPlayer.setPlayerId(1L);
-        testPlayer.setRoomId(1L);
+        testPlayer.setPlayerId(1);
+        testPlayer.setRoomId(1);
         testPlayer.setUsername("testUser");
         
         testQuestion = new Question();
-        testQuestion.setQuestionId(1L);
+        testQuestion.setQuestionId(1);
         testQuestion.setType("multiple_choice");
-        testQuestion.setQuestion("Test question");
+        testQuestion.setType("Test question");
         
         testRound = new Round();
-        testRound.setRoundId(1L);
-        testRound.setGameId(1L);
+        testRound.setRoundId(1);
+        testRound.setGameId(1);
         testRound.setRoundNumber(1);
-        testRound.setCreatedAt(Instant.now());
-        testRound.setEndedAt(Instant.now().plus(Duration.ofMinutes(10)));
+        testRound.setStartedAt(OffsetDateTime.from(Instant.now()));
+        testRound.setEndedAt(OffsetDateTime.from(Instant.now().plus(Duration.ofMinutes(10))));
     }
     
     @Test
     void getGames_returnsGamesList() throws Exception {
         Game game1 = new Game();
-        game1.setGameId(1L);
-        game1.setRoomId(1L);
+        game1.setGameId(1);
+        game1.setRoomId(1);
         
         Game game2 = new Game();
-        game2.setGameId(2L);
-        game2.setRoomId(1L);
+        game2.setGameId(2);
+        game2.setRoomId(1);
         
         Page<Game> gamesPage = new PageImpl<>(Arrays.asList(game1, game2), PageRequest.of(0, 10), 2);
         when(gameRepo.findByRoomId(1L, PageRequest.of(0, 10))).thenReturn(gamesPage);
@@ -132,10 +133,10 @@ class GameControllerTest {
         when(roomRepo.findById(1L)).thenReturn(Optional.of(testRoom));
         
         Game savedGame = new Game();
-        savedGame.setGameId(1L);
-        savedGame.setRoomId(1L);
-        savedGame.setCreatedAt(Instant.now());
-        savedGame.setEndedAt(savedGame.getCreatedAt().plus(Duration.ofMinutes(120))); // 2 rounds * 60 seconds
+        savedGame.setGameId(1);
+        savedGame.setRoomId(1);
+        savedGame.setStartedAt(OffsetDateTime.from(Instant.now()));
+        savedGame.setEndedAt(savedGame.getStartedAt().plus(Duration.ofMinutes(120))); // 2 rounds * 60 seconds
         when(gameRepo.save(any(Game.class))).thenReturn(savedGame);
         
         ResponseEntity<Game> response = controller.createGame(request, session);
@@ -143,8 +144,8 @@ class GameControllerTest {
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals(savedGame.getGameId(), response.getBody().getGameId());
-        assertEquals(1L, response.getBody().getRoomId());
-        assertNotNull(response.getBody().getCreatedAt());
+        assertEquals(1, response.getBody().getRoomId());
+        assertNotNull(response.getBody().getStartedAt());
         assertNotNull(response.getBody().getEndedAt());
         
         verify(gameRepo).save(any(Game.class));
@@ -253,13 +254,13 @@ class GameControllerTest {
     @Test
     void getRounds_returnsRoundsList() {
         Round round1 = new Round();
-        round1.setRoundId(1L);
-        round1.setGameId(1L);
+        round1.setRoundId(1);
+        round1.setGameId(1);
         round1.setRoundNumber(1);
         
         Round round2 = new Round();
-        round2.setRoundId(2L);
-        round2.setGameId(1L);
+        round2.setRoundId(2);
+        round2.setGameId(1);
         round2.setRoundNumber(2);
         
         when(gameRepo.findById(1L)).thenReturn(Optional.of(testGame));
@@ -288,10 +289,10 @@ class GameControllerTest {
     @Test
     void getRoundQuestions_throws403WhenRoundNotStarted() {
         Round round = new Round();
-        round.setRoundId(1L);
-        round.setGameId(1L);
+        round.setRoundId(1);
+        round.setGameId(1);
         round.setRoundNumber(1);
-        round.setCreatedAt(Instant.now().plus(Duration.ofMinutes(10)));
+        round.setStartedAt(OffsetDateTime.from(Instant.now().plus(Duration.ofMinutes(10))));
         
         when(gameRepo.findById(1L)).thenReturn(Optional.of(testGame));
         when(roundRepo.findById(1L)).thenReturn(Optional.of(round));

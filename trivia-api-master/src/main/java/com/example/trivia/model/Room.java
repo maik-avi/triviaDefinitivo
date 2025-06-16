@@ -46,4 +46,6 @@ public class Room {
     }
 
 
+    public void setHostId(Integer playerId) {
+    }
 }

@@ -40,7 +40,7 @@ public class RoomController {
     public ResponseEntity<Room> createRoom(@RequestBody RoomCreationRequest request) {
         Room room = new Room();
         room.setCreatedAt(OffsetDateTime.from(Instant.now()));
-        room.setCode(request.code());
+        room.setUrl(request.code());
         room = roomRepo.save(room);
 
         URI roomUrl = URI.create("/rooms/" + room.getRoomId());
@@ -123,9 +123,9 @@ public class RoomController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Player not authenticated");
         }
 
-        Player player = new Player();
+        Player player1 = new Player();
 
-        if (!player.getPlayerId().equals(currentPlayerId) && !playerId.equals(currentPlayerId)) {
+        if (!player1.getPlayerId().equals(currentPlayerId) && !playerId.equals(currentPlayerId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the host can delete another player");
         }
 
@@ -135,7 +135,7 @@ public class RoomController {
 
         playerRepo.deleteById(playerId);
 
-        if (room.getHostId().equals(currentPlayerId)) {
+        if (player1.getPlayerId().equals(currentPlayerId)) {
             playerRepo.findByRoomId(roomId)
                     .stream()
                     .filter(player -> !player.getPlayerId().equals(playerId))
@@ -158,13 +158,13 @@ public class RoomController {
         if (currentPlayerId == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Player not authenticated");
         }
-
-        if (!room.getHostId().equals(currentPlayerId)) {
+        Player player = new Player();
+        if (!player.getPlayerId().equals(currentPlayerId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the host can create a team");
         }
 
         Team team = new Team();
-        team.setRoomId(roomId);
+        team.setRoomId(Math.toIntExact(roomId));
         team = teamRepo.save(team);
 
         URI location = URI.create("/rooms/" + roomId + "/teams/" + team.getTeamId());
@@ -190,7 +190,8 @@ public class RoomController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Player not authenticated");
         }
 
-        if (!room.getHostId().equals(currentPlayerId)) {
+        Player player = new Player();
+        if (!player.getPlayerId().equals(currentPlayerId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the host can delete a team");
         }
 
@@ -230,11 +231,14 @@ public class RoomController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Player not authenticated");
         }
 
-        if (!room.getHostId().equals(currentPlayerId) && !playerId.equals(currentPlayerId)) {
+        Player player1 = new Player();
+        if (!player1.getPlayerId().equals(currentPlayerId)&& !playerId.equals(currentPlayerId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the host can assign another player to a team");
         }
 
-        player.setTeamId(teamId);
+        Team team = new Team();
+
+        team.setTeamId(Math.toIntExact(teamId));
         playerRepo.save(player);
         return ResponseEntity.noContent().build();
     }
@@ -259,11 +263,13 @@ public class RoomController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Player not authenticated");
         }
 
-        if (!room.getHostId().equals(currentPlayerId) && !playerId.equals(currentPlayerId)) {
+        if (player.getPlayerId().equals(currentPlayerId) && !playerId.equals(currentPlayerId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the host can remove another player from a team");
         }
 
-        player.setTeamId(null);
+        Team team = new Team();
+
+        team.setTeamId(null);
         playerRepo.save(player);
         return ResponseEntity.noContent().build();
     }

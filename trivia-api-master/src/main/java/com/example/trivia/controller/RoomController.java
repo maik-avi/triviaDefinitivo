@@ -2,6 +2,8 @@ package com.example.trivia.controller;
 
 import com.example.trivia.dto.JoinRoomRequest;
 import com.example.trivia.dto.RoomCreationRequest;
+import com.example.trivia.model.Player;
+import com.example.trivia.model.Team;
 import com.example.trivia.model.Room;
 import com.example.trivia.repository.PlayerRepository;
 import com.example.trivia.repository.RoomRepository;
@@ -16,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @RestController
@@ -36,7 +39,7 @@ public class RoomController {
     @PostMapping("/rooms")
     public ResponseEntity<Room> createRoom(@RequestBody RoomCreationRequest request) {
         Room room = new Room();
-        room.setCreatedAt(Instant.now());
+        room.setCreatedAt(OffsetDateTime.from(Instant.now()));
         room.setCode(request.code());
         room = roomRepo.save(room);
 
@@ -62,9 +65,8 @@ public class RoomController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Player not authenticated");
         }
 
-        if (!room.getHostId().equals(currentPlayerId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the host can delete a room");
-        }
+        //Lo borro aqui tambien lo del host solamente puede borrar, ya que ya tengo muy avanzado
+        // el proyecto como para cambiar los modelos y DAO
 
         roomRepo.deleteById(roomId);
         return ResponseEntity.noContent().build();
@@ -78,18 +80,18 @@ public class RoomController {
         Room room = roomRepo.findById(roomId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Room not found"));
 
-        if (!room.getCode().equals(request.code())) {
+        if (!room.getUrl().equals(request.code())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid room code");
         }
 
         Player player = new Player();
-        player.setRoomId(roomId);
+        player.setRoomId(Math.toIntExact(roomId));
         player.setUsername(request.username());
         player = playerRepo.save(player);
 
         // First player to join becomes the host
         if (playerRepo.findByRoomId(roomId).size() == 1) {
-            room.setHostId(player.getPlayerId());
+            player.setPlayerId(player.getPlayerId());
             roomRepo.save(room);
         }
 
@@ -121,7 +123,9 @@ public class RoomController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Player not authenticated");
         }
 
-        if (!room.getHostId().equals(currentPlayerId) && !playerId.equals(currentPlayerId)) {
+        Player player = new Player();
+
+        if (!player.getPlayerId().equals(currentPlayerId) && !playerId.equals(currentPlayerId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the host can delete another player");
         }
 

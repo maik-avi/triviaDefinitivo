@@ -1,7 +1,6 @@
 package com.example.trivia.model;
 
-import java.time.Duration;
-import java.time.Instant;
+
 import java.time.OffsetDateTime;
 
 public class Round {

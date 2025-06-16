@@ -1,5 +1,6 @@
 package com.example.trivia.model;
 
+import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 
 public class Game {

@@ -31,6 +31,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -88,14 +89,12 @@ public class GameController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Player not authenticated");
         }
 
-        if (!room.getHostId().equals(currentPlayerId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the host can create a game");
-        }
+        //Aqui he borrado lo del host solamente puede borrar la partida
 
         Game game = new Game();
-        game.setRoomId(request.roomId());
-        game.setCreatedAt(Instant.now());
-        game.setEndedAt(game.getCreatedAt().plus(Duration.ofSeconds(request.rounds() * request.timePerRound())));
+        game.setRoomId(Math.toIntExact(request.roomId()));
+        game.setStartedAt(OffsetDateTime.of().now());
+        game.setEndedAt(game.getStartedAt().plus(Duration.ofSeconds(request.rounds() * request.timePerRound())));
         game = gameRepo.save(game);
 
         // Create rounds and questions for the game, based on the game's settings
@@ -109,8 +108,8 @@ public class GameController {
             Round round = new Round();
             round.setGameId(game.getGameId());
             round.setRoundNumber(roundNumber);
-            round.setCreatedAt(Instant.now().plus(Duration.ofSeconds(request.timePerRound() * (roundNumber - 1))));
-            round.setEndedAt(round.getCreatedAt().plus(Duration.ofSeconds(request.timePerRound())));
+            round.setStartedAt(OffsetDateTime.now().plus(Duration.ofSeconds(request.timePerRound() * (roundNumber - 1))));
+            round.setEndedAt(round.getStartedAt().plus(Duration.ofSeconds(request.timePerRound())));
             round = roundRepo.save(round);
 
             for (int questionNumber = 1; questionNumber <= request.questionsPerRound(); questionNumber++) {
@@ -122,12 +121,11 @@ public class GameController {
                 }
 
                 // Store questionId to avoid repeating questions
-                questionIds.add(question.getQuestionId());
+                questionIds.add(Long.valueOf(question.getQuestionId()));
 
                 RoundQuestion roundQuestion = new RoundQuestion();
                 roundQuestion.setRoundId(round.getRoundId());
                 roundQuestion.setQuestionId(question.getQuestionId());
-                roundQuestionRepo.save(roundQuestion);
             }
         }
 
@@ -148,16 +146,12 @@ public class GameController {
         Game game = gameRepo.findById(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
 
-        Room room = roomRepo.findById(game.getRoomId())
+        Room room = roomRepo.findById(Long.valueOf(game.getRoomId()))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Room not found"));
 
         Long currentPlayerId = (Long) session.getAttribute(room.getRoomId().toString());
         if (currentPlayerId == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Player not authenticated");
-        }
-
-        if (!room.getHostId().equals(currentPlayerId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the host can delete the game");
         }
 
         gameRepo.deleteById(gameId);
@@ -181,7 +175,7 @@ public class GameController {
         Round round = roundRepo.findById(roundId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Round not found"));
 
-        if (Instant.now().isBefore(round.getCreatedAt())) {
+        if (Instant.now().isBefore(round.getStartedAt().toInstant())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Round has not started yet");
         }
 
@@ -217,7 +211,7 @@ public class GameController {
         Player currentPlayer = playerRepo.findById(currentPlayerId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Player not authenticated"));
 
-        if (Instant.now().isAfter(round.getEndedAt())) {
+        if (Instant.now().isAfter(round.getEndedAt().toInstant())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Round has already ended");
         }
 
@@ -251,7 +245,7 @@ public class GameController {
         questionRepo.findById(questionId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Question not found"));
 
-        if (Instant.now().isBefore(round.getEndedAt())) {
+        if (Instant.now().isBefore(round.getEndedAt().toInstant())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Round has not ended yet");
         }
 

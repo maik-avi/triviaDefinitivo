@@ -33,7 +33,7 @@ public class PlayerDAO {
             }
 
         } else {
-            // UPDATE
+
             String sql = "UPDATE players SET room_id = ?, username = ?, is_host = ? WHERE player_id = ?";
 
             try (PreparedStatement statement = connection.prepareStatement(sql)) {

@@ -7,6 +7,7 @@ public class Room {
     private Integer roomId;
     private String url;
     private OffsetDateTime createdAt;
+    private String code;
 
     public Room() {
     }
@@ -43,5 +44,6 @@ public class Room {
                 ", createdAt=" + createdAt +
                 '}';
     }
+
 
 }

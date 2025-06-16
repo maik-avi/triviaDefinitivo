@@ -1,11 +1,11 @@
 package com.example.trivia.model;
 
-public class Teams {
+public class Team {
 
     private Integer teamId;
     private Integer roomId;
 
-    public Teams() {
+    public Team() {
     }
 
     public Integer getTeamId() {

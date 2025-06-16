@@ -1,13 +1,13 @@
 package com.example.trivia.model;
 
-public class Players {
+public class Player {
 
     private Integer playerId;
     private Integer roomId;
     private String username;
     private Boolean isHost;
 
-    public Players() {
+    public Player() {
     }
 
     public Integer getPlayerId() {

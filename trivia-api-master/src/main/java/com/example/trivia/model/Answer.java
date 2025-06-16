@@ -2,7 +2,7 @@ package com.example.trivia.model;
 
 import java.time.OffsetDateTime;
 
-public class Answers {
+public class Answer {
 
     private Integer answerId;
     private Integer questionId;
@@ -12,7 +12,7 @@ public class Answers {
     private Boolean correct;
     private Integer pointsAwarded;
 
-    public Answers() {
+    public Answer() {
     }
 
     public Integer getAnswerId() {

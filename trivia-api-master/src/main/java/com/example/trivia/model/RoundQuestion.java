@@ -1,14 +1,14 @@
 package com.example.trivia.model;
 
-public class RoundQuestions {
+public class RoundQuestion {
 
     private Integer roundId;
     private Integer questionId;
 
-    public RoundQuestions() {
+    public RoundQuestion() {
     }
 
-    public RoundQuestions(Integer roundId, Integer questionId) {
+    public RoundQuestion(Integer roundId, Integer questionId) {
         this.roundId = roundId;
         this.questionId = questionId;
     }

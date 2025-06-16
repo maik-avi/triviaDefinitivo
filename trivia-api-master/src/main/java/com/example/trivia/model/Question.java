@@ -2,7 +2,7 @@ package com.example.trivia.model;
 
 import java.util.List;
 
-public class Questions {
+public class Question {
 
     private Integer questionId;
     private String type; // multiple_choice, short_answer, buzzer
@@ -11,7 +11,7 @@ public class Questions {
     private List<String> options;
     private List<String> correctAnswers;
 
-    public Questions() {
+    public Question() {
     }
 
     public Integer getQuestionId() {

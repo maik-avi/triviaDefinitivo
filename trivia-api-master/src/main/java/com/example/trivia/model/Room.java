@@ -2,13 +2,13 @@ package com.example.trivia.model;
 
 import java.time.OffsetDateTime;
 
-public class Rooms {
+public class Room {
 
     private Integer roomId;
     private String url;
     private OffsetDateTime createdAt;
 
-    public Rooms() {
+    public Room() {
     }
 
     public Integer getRoomId() {
@@ -43,4 +43,5 @@ public class Rooms {
                 ", createdAt=" + createdAt +
                 '}';
     }
+
 }

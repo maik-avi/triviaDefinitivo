@@ -1,12 +1,12 @@
 package com.example.trivia.model;
 
-public class TeamScores {
+public class TeamScore {
 
     private Integer teamId;
     private Integer gameId;
     private Integer points;
 
-    public TeamScores() {
+    public TeamScore() {
     }
 
     public Integer getTeamId() {

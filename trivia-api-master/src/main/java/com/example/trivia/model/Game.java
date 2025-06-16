@@ -2,7 +2,7 @@ package com.example.trivia.model;
 
 import java.time.OffsetDateTime;
 
-public class Games {
+public class Game {
 
     private Integer gameId;
     private Integer roomId;
@@ -12,7 +12,7 @@ public class Games {
     private OffsetDateTime startedAt;
     private OffsetDateTime endedAt;
 
-    public Games() {
+    public Game() {
     }
 
     public Integer getGameId() {

@@ -1,8 +1,10 @@
 package com.example.trivia.model;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.time.OffsetDateTime;
 
-public class Rounds {
+public class Round {
 
     private Integer roundId;
     private Integer gameId;
@@ -10,7 +12,7 @@ public class Rounds {
     private OffsetDateTime startedAt;
     private OffsetDateTime endedAt;
 
-    public Rounds() {
+    public Round() {
     }
 
     public Integer getRoundId() {
@@ -63,4 +65,5 @@ public class Rounds {
                 ", endedAt=" + endedAt +
                 '}';
     }
+
 }

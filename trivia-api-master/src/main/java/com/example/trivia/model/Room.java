@@ -45,7 +45,6 @@ public class Room {
                 '}';
     }
 
-
-    public void setHostId(Integer playerId) {
+    public void setHostId(int i) {
     }
 }

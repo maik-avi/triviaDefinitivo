@@ -94,3 +94,10 @@ CREATE TABLE team_score (
     points INTEGER DEFAULT 0,
     PRIMARY KEY (team_id, game_id)
 );
+
+--SE ME HA OLVIDADO POR COMPLETO HACER LA RELACION DE TEAM Y PLAYER, SINÓ ASI NO FUNCIONARÁ EL JUEGO COMO TAL
+CREATE TABLE player_team (
+    player_id INTEGER REFERENCES players(player_id) ON DELETE CASCADE,
+    team_id INTEGER REFERENCES team(team_id) ON DELETE CASCADE,
+    PRIMARY KEY (player_id, team_id)
+);

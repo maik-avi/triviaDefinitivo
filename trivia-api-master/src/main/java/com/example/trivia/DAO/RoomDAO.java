@@ -72,27 +72,6 @@ public class RoomDAO {
         return Optional.empty();
     }
 
-    public Optional<Room> findByUrl(String url) {
-        String sql = "SELECT * FROM rooms WHERE url = ?";
-
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, url);
-
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    Room room = new Room();
-                    room.setRoomId(resultSet.getInt("room_id"));
-                    room.setUrl(resultSet.getString("url"));
-                    room.setCreatedAt(resultSet.getObject("created_at", OffsetDateTime.class));
-                    return Optional.of(room);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return Optional.empty();
-    }
 
     public void deleteById(int id) {
         String sql = "DELETE FROM rooms WHERE room_id = ?";
